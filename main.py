@@ -34,7 +34,9 @@ users_actions = [
     {"id": 5, "action": "sitting"},
     {"id": 6, "action": "raising"},
     {"id": 7, "action": "crawling"},
-    {"id": 8, "action": "singing"}
+    {"id": 8, "action": "singing"},
+    {"id": 9, "action": "testing"},
+    {"id": 10, "action": "github"}
               ]
 
 
