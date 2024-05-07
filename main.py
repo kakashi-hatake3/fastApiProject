@@ -1,4 +1,8 @@
+from datetime import datetime
+from enum import Enum
+from typing import List, Optional
 from fastapi import FastAPI
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 
@@ -16,11 +20,33 @@ async def say_hello(name: str):
 users_list = [
     {"id": 0, "name": "Ivan", "role": "loser"},
     {"id": 1, "name": "Dima", "role": "admin"},
-    {"id": 2, "name": "Bogdan", "role": "goat"}
+    {"id": 2, "name": "Bogdan", "role": "goat"},
+    {"id": 3, "name": "Vasya", "role": "lox", "degree": [{
+        "id": 0, "created_at": "2024-05-05T13:03:07", "type_degree": "newbie"
+    }]}
               ]
 
 
-@app.get("/users/{user_id}")
+class DegreeType(Enum):
+    newbie = "newbie"
+    expert = "expert"
+    lox = "lox"
+
+
+class Degree(BaseModel):
+    id: int
+    created_at: datetime
+    type_degree: DegreeType
+
+
+class User(BaseModel):
+    id: int
+    name: str
+    role: str
+    degree: Optional[List[Degree]] = []
+
+
+@app.get("/users/{user_id}", response_model=List[User])
 def get_users(user_id: int = 1):
     return [user for user in users_list if user.get("id") == user_id]
 
@@ -48,3 +74,21 @@ def get_actions(count: int = 3, starts_w: int = 0):
 @app.get("/gay")
 def get_gay():
     return "gay shit"
+
+
+@app.post("/users/{user_id}")
+def rename(user_id: int, new_name: str):
+    current_user = list(filter(lambda user: user.get("id") == user_id, users_list))[0]
+    current_user["name"] = new_name
+    return {"status": 200, "data": current_user}
+
+
+class Action(BaseModel):
+    id: int
+    action: str = Field(max_length=7)
+
+
+@app.post("/actions")
+def add_actions(new_actions: List[Action]):
+    users_actions.extend(new_actions)
+    return {"status": 200, "data": users_actions}
