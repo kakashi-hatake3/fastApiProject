@@ -43,3 +43,8 @@ users_actions = [
 @app.get("/actions")
 def get_actions(count: int = 3, starts_w: int = 0):
     return users_actions[starts_w:][:count]
+
+
+@app.get("/gay")
+def get_gay():
+    return "gay shit"
