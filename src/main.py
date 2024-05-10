@@ -1,15 +1,11 @@
-from datetime import datetime
-from enum import Enum
-from typing import List, Optional
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
-from pydantic import BaseModel, Field
 
-from auth.auth import auth_backend
-from auth.manager import get_user_manager
-from auth.schemas import UserRead, UserCreate
+from src.auth.base_config import auth_backend
+from src.auth.manager import get_user_manager
+from src.auth.schemas import UserRead, UserCreate
 
-from auth.database import User
+from src.database import User
 
 app = FastAPI()
 
@@ -48,4 +44,3 @@ current_user = fastapi_users.current_user()
 @app.get("/protected-route")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.name}"
-
