@@ -5,7 +5,7 @@ from src.config import SECRET_AUTH
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 
-from src.database import User
+from src.auth.models import User
 
 cookie_transport = CookieTransport(cookie_max_age=3600, cookie_name="ye")
 
