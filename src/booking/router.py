@@ -1,4 +1,7 @@
+import time
+
 from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
 from sqlalchemy import select, insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -38,3 +41,12 @@ async def update_count_of_people_reservation(first_name: str,
     await session.execute(stmt)
     await session.commit()
     return {"status": "updated"}
+
+
+@router.get("/cache-check")
+@cache(expire=30)
+async def cache_check():
+    time.sleep(2)
+    return {
+        "status": "pospali)"
+    }
